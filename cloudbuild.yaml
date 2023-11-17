@@ -1,0 +1,22 @@
+steps:
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+            'build',
+            '-t',
+            'us-east1-docker.pkg.dev/eastern-dream-404606/testing:${SHORT_SHA}',
+            '-t',
+            'us-east1-docker.pkg.dev/eastern-dream-404606/testing:latest',
+            '--cache-from',
+            'us-east1-docker.pkg.dev/eastern-dream-404606/testing:latest',
+            '.'
+          ]
+
+  # Docker push to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push',  'us-east1-docker.pkg.dev/eastern-dream-404606/testing:${SHORT_SHA}']
+
+# Store images in Google Artifact Registry 
+images:
+  - us-east1-docker.pkg.dev/eastern-dream-404606/testing:${SHORT_SHA}
+  - us-east1-docker.pkg.dev/eastern-dream-404606/testing:latest
